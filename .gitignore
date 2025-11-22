@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+*.key
+*.pem
+
+# LightRAG storage
+travel_rag/
+rag_storage/
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+
+# Data files (不提交大数据文件)
+*.json.gz
+florida*
+data/*.json
+data/*.txt
+
+# Temporary files
+*.tmp
+temp/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

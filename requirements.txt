@@ -1,0 +1,18 @@
+# LightRAG framework
+lightrag>=1.4.9
+
+# LLM and Embedding
+openai>=1.0.0
+python-dotenv>=1.0.0
+
+# Database
+asyncpg>=0.29.0
+psycopg2-binary>=2.9.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Optional: for advanced features
+# pgvector>=0.2.0  # If using pgvector Python client
+# neo4j>=5.0.0     # If using Neo4j for graph storage
