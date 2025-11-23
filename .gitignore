@@ -21,6 +21,7 @@ env/
 *.swp
 *.swo
 .DS_Store
+docs/
 
 # Environment variables
 .env

@@ -7,12 +7,14 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 import sys
+from pathlib import Path
 
-# 加载环境变量
+# Load environment variables
 load_dotenv()
 
-# 添加 LightRAG 到 Python 路径
-sys.path.append('../LightRAG')
+# Add LightRAG to Python path using absolute path
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / 'LightRAG'))
 
 from lightrag import LightRAG, QueryParam
 from lightrag.utils import EmbeddingFunc
@@ -96,28 +98,30 @@ async def qwen_plus_llm_func(
         return f"API call failed: {str(e)}"
 
 
-async def qwen_embedding_func(texts: list[str]) -> list[list[float]]:
+async def qwen_embedding_func(texts: list[str]):
     """
-    Qwen Embedding 函数，用于 LightRAG
+    Qwen Embedding function for LightRAG
 
     Args:
-        texts: 需要向量化的文本列表
+        texts: List of texts to vectorize
 
     Returns:
-        list[list[float]]: 向量列表
+        numpy array: Embedding vectors
     """
+    import numpy as np
+
     try:
         response = client.embeddings.create(
             model="text-embedding-v4",
             input=texts
         )
         embeddings = [item.embedding for item in response.data]
-        return embeddings
+        return np.array(embeddings)
 
     except Exception as e:
         print(f"Qwen Embedding API error: {e}")
-        # 返回默认维度的零向量
-        return [[0.0] * 1024 for _ in texts]
+        # Return default dimension zero vectors
+        return np.array([[0.0] * 1024 for _ in texts])
 
 
 def create_lightrag_instance(
@@ -159,13 +163,14 @@ def create_lightrag_instance(
         "embedding_func_max_async": 16,
     }
 
-    # PostgreSQL 存储配置（推荐）
+    # PostgreSQL storage configuration (recommended)
+    # Using NetworkX for graph storage (AGE extension not required)
     if use_postgres:
         config.update({
-            "kv_storage": "PostgresKVStorage",
-            "vector_storage": "PostgresVectorStorage",
-            "graph_storage": "PostgresGraphStorage",
-            "doc_status_storage": "PostgresDocStatusStorage",
+            "kv_storage": "PGKVStorage",
+            "vector_storage": "PGVectorStorage",
+            "graph_storage": "NetworkXStorage",  # Use NetworkX instead of PGGraphStorage (no AGE required)
+            "doc_status_storage": "PGDocStatusStorage",
             "vector_db_storage_cls_kwargs": {
                 **POSTGRES_CONFIG,
                 "cosine_better_than_threshold": 0.2,
