@@ -44,7 +44,6 @@ logs/
 florida*
 data/*.json
 data/*.txt
-data/places_export.jsonl
 data/tampa_places_100.jsonl
 
 # Temporary files
