@@ -12,12 +12,17 @@ from pathlib import Path
 # Load environment variables
 load_dotenv()
 
-# Add LightRAG to Python path using absolute path
 PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / 'LightRAG'))
 
-from lightrag import LightRAG, QueryParam
-from lightrag.utils import EmbeddingFunc
+# Try pip-installed lightrag first, fallback to local LightRAG directory
+try:
+    from lightrag import LightRAG, QueryParam
+    from lightrag.utils import EmbeddingFunc
+except ImportError:
+    # Fallback: use local LightRAG directory
+    sys.path.insert(0, str(PROJECT_ROOT / 'LightRAG'))
+    from lightrag import LightRAG, QueryParam
+    from lightrag.utils import EmbeddingFunc
 
 
 # ===== API 配置 =====
